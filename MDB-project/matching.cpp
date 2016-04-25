@@ -1,6 +1,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QString>
+#include <sstream>
 
 # include "opencv2/core/core.hpp"
 # include "opencv2/features2d/features2d.hpp"
@@ -8,7 +9,6 @@
 # include "opencv2/nonfree/features2d.hpp"
 # include "opencv2/nonfree/nonfree.hpp"
 using namespace cv;
-
 
 double match(char* path1, char* path2)
 {
@@ -48,15 +48,15 @@ double match(char* path1, char* path2)
         if( dist < min_dist ) min_dist = dist;
         if( dist > max_dist ) max_dist = dist;
     }
-
+    /*
     printf("%s\n", path2);
     printf("-- Max dist : %f \n", max_dist );
     printf("-- Min dist : %f \n", min_dist );
+    */
 
     //-- Draw only "good" matches (i.e. whose distance is less than 2*min_dist,
     //-- or a small arbitary value ( 0.02 ) in the event that min_dist is very
     //-- small)
-    //-- PS.- radiusMatch can also be used here.
     std::vector< DMatch > good_matches;
 
     for( int i = 0; i < descriptors_1.rows; i++ ){
@@ -72,15 +72,19 @@ double match(char* path1, char* path2)
                  vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS );
 
     //-- Show detected matches
-    imshow( "Good Matches", img_matches );
+    //std::ostringstream strs;
+    //strs << min_dist;
+    //std::string str = strs.str();
+    imshow( "Matching", img_matches );
 
+/*
     for( int i = 0; i < (int)good_matches.size(); i++ ){
-        //printf( "-- Good Match [%d] Keypoint 1: %d  -- Keypoint 2: %d  \n", i, good_matches[i].queryIdx, good_matches[i].trainIdx );
+        printf( "-- Good Match [%d] Keypoint 1: %d  -- Keypoint 2: %d  \n", i, good_matches[i].queryIdx, good_matches[i].trainIdx );
     }
-
+*/
     img_1.release();
     img_2.release();
 
-    waitKey(0);
+    //waitKey(0);
     return min_dist;
 }

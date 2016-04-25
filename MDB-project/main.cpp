@@ -12,9 +12,4 @@ int main(int argc, char** argv)
     win->show();
 
     return a.exec();
-/*
-    //for(int i=1; i<20; i++)
-        match("../DB-test/lvl1/adobe.png", "../DB/lvl1/adobe.png");
-    return 0;
-*/
 }
